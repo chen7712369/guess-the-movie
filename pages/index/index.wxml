@@ -9,17 +9,17 @@
   </view>
    <!--  获取名字对应的空白格  -->
   <view class='text-name'  style="display:flex;justify-content:center;width:100%">
-   <view wx:for-items="{{Array[number].name}}" style='width:20px;height:20px;color:black;background-color:white;margin:5px;'> </view>
+   <view wx:for-items="{{Array[number].name}}" style='width:20px;height:20px;color:black;background-color:white;margin:5px;'>{{nameme[index]}} </view>
   </view>
 
  <!--  生成选项  -->
   <view class='choose' id='abc' > 
 
     <view class='choose-line' style="display:flex;justify-content:center" >
-      <view class='choose-line-st' wx:for="{{chooseid}}" id='{{index}}' style='width:20px;height:20px;margin:5px'>{{Array[number].name[item]}}</view>
+      <view class='choose-line-st' wx:for="{{chooseid}}" id='{{index}}' style='width:20px;height:20px;margin:5px' data-textt="{{chooseworld[item]}}"  bindtap='andaole'><!--{{Array[number].name[item]}}-->{{chooseworld[item]}}</view>
     </view>
     <view class='choose-line' style="display:flex;justify-content:center">
-      <view wx:for="{{10}}"  style='width:20px;height:20px;background-color:red;margin:5px'></view>
+      <view wx:for="{{10}}" class='choose-line-st1'  style='width:20px;height:20px;background-color:red;margin:5px'></view>
     </view>
     <view class='choose-line' style="display:flex;justify-content:center">
       <view wx:for="{{10}}"  style='width:20px;height:20px;background-color:red;margin:5px'></view>
