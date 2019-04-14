@@ -7,5 +7,7 @@
   }
 .choose-line{
   display:flex;
-  justify-content:center
+  justify-content:center;
+  text-align:center;
+  line-height: 20px;
 }

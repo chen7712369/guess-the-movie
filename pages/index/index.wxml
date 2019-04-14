@@ -8,17 +8,17 @@
   </view>
    <!--  获取名字对应的空白格  -->
   <view class='text-name'  style="display:flex;justify-content:center;width:100%">
-   <view wx:for-items="{{Array[number].name}}" bindtap='xiugai'  style='width:20px;height:20px;color:black;background-color:white;margin:5px;'>{{nameme[index]}} </view>
+   <view wx:for-items="{{nameLength}}" bindtap='xiugai' data-number='{{item}}' style='width:20px;height:20px;color:black;background-color:white;margin:5px;'>{{nameme[index]}} </view>
   </view>
  <!--  生成选项  -->
   <view class='choose' id='abc' > 
     <view class='choose-line' wx:for="{{3}}" wx:for-item='nazou'>
-      <view class='choose-line-st' wx:for="{{chooseid}}"  id='{{item}}+{{index}}'  data-textt="{{lalala[nazou][item]}}"  bindtap='andaole'>{{lalala[nazou][item]}}</view>
+      <view class='choose-line-st' wx:for="{{chooseid}}"  id='{{nazou}}{{index}}' data-bindedtap='{{nazou}}{{index}}'  data-textt="{{lalala[nazou][item]}}"  bindtap='andaole'>{{lalala[nazou][item]}}</view>
     </view>
   </view>
   <view class='text-answer' style='background-color:white'>第{{number}}张图片</view>
-  <button bindtap='changeimage' type='primary'>按下按钮，切换下一张图片</button>
+  <button bindtap='changeimage' type='primary'>{{changetxt}}</button>
 
-  <button bindtap='newtext' type='primary'>生成选项</button>
+  <button bindtap='newtext' type='primary'>重新生成选项</button>
   
 </view>
