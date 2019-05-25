@@ -1,5 +1,7 @@
 var movietxt=require('/movie.js');//载入目录文件
 //var moviejson=require('/movie.json')
+
+
 Page({
 
   /**
@@ -37,6 +39,9 @@ Page({
     nameLength:3,//记录电影名字长度
     hunxiao:'的一是了我不人在他有这个上们来到时大地为子中你说生国年着就那和要她出也得里后自以会家可下而过天去能对小多然于心学么之都好看起发当没成只如事把还用第样道想作种开美总从无情己面最女但现前些所同日手又行意动方期它头经长儿回位分爱老因很给名法间斯知世什两次使身者被高已亲其进此话常与活正感',//储存常用字的字库
     changetxt:'',
+    hasUserInfo:false,
+    canIUseButton:wx.canIUse('button.open-type.getUserInfo'),
+
 
     movie:movietxt.indid,//把目录置入数据
 
@@ -130,5 +135,54 @@ Page({
     //  console.log(this.data.nameme)
       this.data.xuanxiang--;
     }
-  }
+  },
+  toUserInfoPage:function(){//跳转到用户信息页
+    wx.navigateTo({
+      url: '../userinfopage/userinfopage',
+    })
+    /*
+    wx.redirectTo({
+      url: '../userinfopage/userinfopage',
+    })
+    也是跳转，用于跳到非tabBar页面
+    */
+   
+  },
+
+  getUserInfoNow:function(e){//初次登录的校验信息
+    console.log(e)
+    console.log(e.detail.rawData);
+    wx.login({
+      success(res){
+        if(res.code){
+          console.log(res)
+          wx.request({
+            url: 'https://www.612star.cn/login-wx.php',
+            data: {
+              code: res.code,
+              rawData: e.detail.rawData, 
+              signature: e.detail.signature, 
+            //  iv: e.detail.iv,
+            //  encryptedData: e.detail.encryptedData
+            },//校验所需的信息
+          
+            success(res){
+              console.log(res)//获取到的openid
+            }
+
+          
+          })
+
+        }else{}
+
+
+      }
+
+      
+    })
+        
+    
+
+
+  },
 })

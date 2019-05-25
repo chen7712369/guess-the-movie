@@ -1,0 +1,7 @@
+<!--pages/userinfopage/userinfopage.wxml-->
+<!--text>pages/userinfopage/userinfopage.wxml</text-->
+
+
+<open-data type="userAvatarUrl" ></open-data>
+<open-data type="userNickName"></open-data>
+<button bindtap='returnindex' type='primary'>返回</button>
