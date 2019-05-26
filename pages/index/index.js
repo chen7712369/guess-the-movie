@@ -152,6 +152,7 @@ Page({
   getUserInfoNow:function(e){//初次登录的校验信息
     console.log(e)
     console.log(e.detail.rawData);
+    var thispage = this;//保存一个指向page的链接，方便后续修改
     wx.login({
       success(res){
         if(res.code){
@@ -167,13 +168,16 @@ Page({
             },//校验所需的信息
           
             success(res){
-              console.log(res)//获取到的openid
+              console.log(res);//获取到的openid
+              console.log("搞定了登陆流程");
+              thispage.setData({hasUserInfo:true })//这是一个有返回值的场景，this指向返回值，因此通过之前定义的thispage来修改hasuserinfo的值。
+                //此处还需要优化，解决用户进入页面前就已授权的状况。和用户使用不同设备登录的问题。
             }
 
           
           })
 
-        }else{}
+        }else{}//获取登录code失败
 
 
       }
