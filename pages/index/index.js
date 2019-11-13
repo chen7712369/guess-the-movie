@@ -30,15 +30,17 @@ Page({
     ],
     */
     lalala:[],//用来储存切割后的备选项
+    img_src:'',//储存后台回传的图片地址
+    movie_name:'',//储存后台回传的电影名字
     chooseid:(10),//生成30个备选项方框
     binded: [],//记录选项的点击与否
     chooseworld:'', //记录备选项的文本
     nameme: '',//选择的答案
     xuanxiang:0,//已选答案数
-    number:-1,//第几道题，因为启动时自动调用切入下一道题的函数，因此预设为-1
+    number:0,//第几道题，因为启动时自动调用切入下一道题的函数，因此预设为-1
     nameLength:3,//记录电影名字长度
     hunxiao:'的一是了我不人在他有这个上们来到时大地为子中你说生国年着就那和要她出也得里后自以会家可下而过天去能对小多然于心学么之都好看起发当没成只如事把还用第样道想作种开美总从无情己面最女但现前些所同日手又行意动方期它头经长儿回位分爱老因很给名法间斯知世什两次使身者被高已亲其进此话常与活正感',//储存常用字的字库
-    changetxt:'',
+    changetxt:'点击切换下一张图片',
     hasUserInfo:false,
     canIUseButton:wx.canIUse('button.open-type.getUserInfo'),
 
@@ -47,12 +49,29 @@ Page({
 
   },
   changeimage: function () {    //-----------------------------------------------------------------------------
+  var thispage=this;
+  wx.request({//从服务器获取电影信息
+    url: 'https://www.612star.cn/newmovie.php',
+    data:{
+      movienumber: this.data.number//将当前的题号作为标记传给服务器
+
+    },
+    success(res){
+       console.log(res)//获取到了电影信息
+    //  if(res.movie_namee){
+        thispage.setData({ img_src:"../image/"+res.data.movie_imgg});//修改当前电影图片
+        thispage.setData({ movie_name:res.data.movie_namee });//修改当前电影名字
+    //}
+    }
+  })
+  
     var X=this.data.number;
     X+=1;
     this.setData({number:X})
-    this.setData({nameLength: this.data.Array[X].name.length})//计算当前电影名字总长。
+    this.setData({ nameLength: this.data.movie_name.length })//计算当前电影名字总长。取代下一句的功能
+ //   this.setData({nameLength: this.data.Array[X].name.length})//计算当前电影名字总长。
     this.setData({ xuanxiang: 0 })
-    this.setData({ changetxt: '点击切换下一张图片'})
+  //  this.setData({ changetxt: '点击切换下一张图片'})
     this.newtext()
     //将该变量重置为一串和答案等长的空格
     var txt = ''
@@ -64,7 +83,8 @@ Page({
     this.newbindedtap()
   },
   newtext: function () {//随机生成字符补充缺位-----------------------------------------------------------------------------
-  this.data.chooseworld=this.data.Array[this.data.number].name//将电影名称输入字符串
+//  this.data.chooseworld=this.data.Array[this.data.number].name//将电影名称输入字符串,有了后台回传数据后此句无效
+    this.data.chooseworld = this.data.movie_name;//临时替代上一句代码
     for(var i=this.data.chooseworld.length;i<30;i++){//补足缺位
       var X=Math.round(Math.random()*139)
       this.data.chooseworld +=this.data.hunxiao[X]
@@ -146,7 +166,6 @@ Page({
     })
     也是跳转，用于跳到非tabBar页面
     */
-   
   },
 
   getUserInfoNow:function(e){//初次登录的校验信息
@@ -173,16 +192,12 @@ Page({
               thispage.setData({hasUserInfo:true })//这是一个有返回值的场景，this指向返回值，因此通过之前定义的thispage来修改hasuserinfo的值。
                 //此处还需要优化，解决用户进入页面前就已授权的状况。和用户使用不同设备登录的问题。
             }
-
-          
           })
 
-        }else{}//获取登录code失败
-
-
-      }
-
-      
+        }else{
+          console.log("登陆失败")
+        }//获取登录code失败
+      }      
     })
         
     

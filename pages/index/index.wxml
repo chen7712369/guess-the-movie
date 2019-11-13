@@ -2,7 +2,8 @@
   <!-- 获取图片  -->
   <view style="display:flex;width:100%;justify-content:center">
     <view class='text-image' style='width:80%' >
-     <image id='movie-image'  style='width:100%' mode="aspectFit" src="{{Array[number].src}}"></image>  
+    <image id='movie-image'  style='width:100%' mode="aspectFit" src="{{img_src}}"></image>  
+ <!--      <image id='movie-image'  style='width:100%' mode="aspectFit" src="{{Array[number].src}}"></image>  -->
      </view>
   </view>
    <!--  获取名字对应的空白格  -->
@@ -17,7 +18,7 @@
   </view>
   <!--view class='text-answer' style='background-color:white'>第{{number}}张图片</view-->、
   <button wx:if="{{!hasUserInfo && canIUseButton}}" open-type='getUserInfo' bindgetuserinfo='getUserInfoNow' type='primary'> 初次使用请先登录</button>
-  <button wx:else bindtap='changeimage' type='primary'>{{changetxt}}</button>
+  <button wx:else bindtap='changeimage' type='primary'>'点击切换下一张图片'</button>
   <button bindtap='newtext' type='primary'>重新生成选项</button>
   <button bindtap='toUserInfoPage' type='primary'>用户信息</button>
 </view>
