@@ -1,16 +1,15 @@
-var movietxt=require('/movie.js');//载入目录文件
+//var movietxt=require('/movie.js');//载入目录文件
 //var moviejson=require('/movie.json')
 
 
 Page({
-
   /**
    * 页面的初始数据
    */
   data: {
-      Array:movietxt.indid,//将json发送的电影信息数据载入
- //     TTTT:JSON.parse(url='/movie.json'),
-/*    Array:[
+    /*  Array:movietxt.indid,//将json发送的电影信息数据载入
+     TTTT:JSON.parse(url='/movie.json'),
+     Array:[
       {
         src:'../image/xfx.jpg', 
         name:'小飞象'
@@ -27,64 +26,67 @@ Page({
         src: '../image/fkdwxr.jpg',
         name: '疯狂的外星人'
       },
-    ],
+     ],
     */
     lalala:[],//用来储存切割后的备选项
     img_src:'',//储存后台回传的图片地址
-    movie_name:'',//储存后台回传的电影名字
+    movie_name:'',//储存后台回传的电影名字【与chooseworld重复，暂且不用】
     chooseid:(10),//生成30个备选项方框
     binded: [],//记录选项的点击与否
-    chooseworld:'', //记录备选项的文本
+    chooseworld:'', //记录当前电影名称的文本
     nameme: '',//选择的答案
     xuanxiang:0,//已选答案数
-    number:0,//第几道题，因为启动时自动调用切入下一道题的函数，因此预设为-1
-    nameLength:3,//记录电影名字长度
+    number:1,//第几道题，因为启动时自动调用切入下一道题的函数，因此预设为-1
+    nameLength:5,//记录电影名字长度
     hunxiao:'的一是了我不人在他有这个上们来到时大地为子中你说生国年着就那和要她出也得里后自以会家可下而过天去能对小多然于心学么之都好看起发当没成只如事把还用第样道想作种开美总从无情己面最女但现前些所同日手又行意动方期它头经长儿回位分爱老因很给名法间斯知世什两次使身者被高已亲其进此话常与活正感',//储存常用字的字库
     changetxt:'点击切换下一张图片',
     hasUserInfo:false,
     canIUseButton:wx.canIUse('button.open-type.getUserInfo'),
-
-
-    movie:movietxt.indid,//把目录置入数据
-
+  //  movie:movietxt.indid,//把目录置入数据
   },
-  changeimage: function () {    //-----------------------------------------------------------------------------
-  var thispage=this;
+getinformation : function(){
+  var thispage = this;
   wx.request({//从服务器获取电影信息
     url: 'https://www.612star.cn/newmovie.php',
-    data:{
+    data: {
       movienumber: this.data.number//将当前的题号作为标记传给服务器
-
     },
-    success(res){
-       console.log(res)//获取到了电影信息
-    //  if(res.movie_namee){
-        thispage.setData({ img_src:"../image/"+res.data.movie_imgg});//修改当前电影图片
-        thispage.setData({ movie_name:res.data.movie_namee });//修改当前电影名字
-    //}
+    success: function (res) {
+      console.log(res)//获取到了电影信息
+      thispage.setData({ img_src: "../image/" + res.data.movie_imgg });//修改当前电影图片
+      thispage.setData({ movie_name:res.data.movie_namee });//修改当前电影名字
+      thispage.setData({ chooseworld: res.data.movie_namee });//修改当前电影名字
+      thispage.setData({ nameLength: res.data.movie_namee.length });//计算当前电影名字总长。取代下一句的功能
+      thispage.newtext()
     }
   })
-  
+},
+changeimage: function () { 
+//--------------------------------------------------
+  this.getinformation()
     var X=this.data.number;
     X+=1;
     this.setData({number:X})
-    this.setData({ nameLength: this.data.movie_name.length })//计算当前电影名字总长。取代下一句的功能
- //   this.setData({nameLength: this.data.Array[X].name.length})//计算当前电影名字总长。
     this.setData({ xuanxiang: 0 })
-  //  this.setData({ changetxt: '点击切换下一张图片'})
-    this.newtext()
+    //this.setData({ changetxt: '点击切换下一张图片'})
+    //this.newtext()//由于存在数据延迟的问题，把这句代码移入request内部
     //将该变量重置为一串和答案等长的空格
     var txt = ''
     for (var i = 0; i < this.data.nameLength; i++) {
       txt += ' '
     }
     this.setData({ nameme: txt })
-    //
     this.newbindedtap()
   },
-  newtext: function () {//随机生成字符补充缺位-----------------------------------------------------------------------------
-//  this.data.chooseworld=this.data.Array[this.data.number].name//将电影名称输入字符串,有了后台回传数据后此句无效
-    this.data.chooseworld = this.data.movie_name;//临时替代上一句代码
+  newtext: function () {//随机生成字符补充缺位
+  console.log('生成字符串')
+ // -----------------------------------------------------------------------------
+/*  this.data.chooseworld=this.data.Array[this.data.number].name//将电影名称输入字符串,有了后台回传数据后此句无效
+    this.setData({
+      chooseworld:this.data.movie_name
+   })
+    this.setData.chooseworld = this.data.movie_name;//临时替代上一句代码
+   */
     for(var i=this.data.chooseworld.length;i<30;i++){//补足缺位
       var X=Math.round(Math.random()*139)
       this.data.chooseworld +=this.data.hunxiao[X]
@@ -103,10 +105,11 @@ Page({
    mimi[2]=txt.substring(20,30)
    this.setData({lalala:mimi})
   //console.log(this.data.lalala)//检测词条生成状况
+  //console.log('字符串完成：'+this.data.lalala[0])
   },
   onLoad: function () {//加载完成后先扫一遍-----------------------------------------------------------------------------
-    this.changeimage()
- 
+  this.changeimage()
+
   //  var mivie=this.data.moviee.indid
   //  console.log(this.data.movie[0].src)
 
@@ -148,7 +151,6 @@ Page({
           break;
         }
       }
-   //   console.log('跳出')
       var W = e.currentTarget.dataset.number//取出被点击的放个所在位
       var txt = this.data.nameme.substring(0, W) +' '  + this.data.nameme.substring(W + 1, this.data.nameLength)
       this.setData({ nameme: txt })
