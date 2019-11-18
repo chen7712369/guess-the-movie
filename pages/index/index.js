@@ -1,4 +1,3 @@
-
 Page({
   /**
    * 页面的初始数据
@@ -15,7 +14,7 @@ Page({
     number:1,//第几道题，因为启动时自动调用切入下一道题的函数，因此预设为-1
     nameLength:'',//记录电影名字长度
     hunxiao:'的一是了我不人在他有这个上们来到时大地为子中你说生国年着就那和要她出也得里后自以会家可下而过天去能对小多然于心学么之都好看起发当没成只如事把还用第样道想作种开美总从无情己面最女但现前些所同日手又行意动方期它头经长儿回位分爱老因很给名法间斯知世什两次使身者被高已亲其进此话常与活正感',//储存常用字的字库
-    changetxt:'点击切换下一张图片',
+    changetxt:'点击跳过当前题目',
     hasUserInfo:false,
     canIUseButton:wx.canIUse('button.open-type.getUserInfo'),
   },
@@ -28,11 +27,10 @@ getinformation : function(){//获取后台的电影信息
     },
     success: function (res) {
       console.log(res)//获取到了电影信息
-      thispage.setData({ img_src: "../image/" + res.data.movie_imgg });//修改当前电影图片
+      thispage.setData({ img_src: "https://www.612star.cn/image/" + res.data.movie_imgg });//修改当前电影图片
       thispage.setData({ movie_name:res.data.movie_namee });//修改当前电影名字
       thispage.setData({ choosetxt: res.data.movie_namee });//将电影名字置入备选项
-      thispage.setData({ nameLength: res.data.movie_namee.length });//计算当前电影名字总长。取代下一句的功能
-
+      thispage.setData({ nameLength: res.data.movie_namee.length });//计算当前电影名字总长.
 //-------------------------------------从外部移入的代码，解决json传输延迟所致的bug
       var X = thispage.data.number;
       X += 1;
@@ -74,6 +72,7 @@ changeimage: function () {
       mimi[1]=txt.substring(10,20)
       mimi[2]=txt.substring(20,30)
     this.setData({lalala:mimi})
+    this.setData({changetxt:"点击跳过当前题目"});
   },
  // -----------------------------------------------------------------------------
   onLoad: function () {//加载完成后先扫一遍
@@ -139,9 +138,51 @@ changeimage: function () {
   },
 
   getUserInfoNow:function(e){//初次登录的校验信息
-    console.log(e)
-    console.log(e.detail.rawData);
+
     var thispage = this;//保存一个指向page的链接，方便后续修改
+   //wx.//此处需要增加一个弹出菜单，用以在用户处于未登录状态，而点击了登陆按钮后封堵用户的操作
+   wx.showModal({
+     title: '是否登陆？',
+     content: '',
+     success(res){
+       if(res.confirm){
+         wx.showLoading({
+           title: '',
+         })
+       wx.login({
+         success(res) {
+           if (res.code) {
+             console.log(res)
+             wx.request({
+               url: 'https://www.612star.cn/login-wx.php',
+               data: {
+                 code: res.code,
+                 rawData: e.detail.rawData,
+                 signature: e.detail.signature,
+                 //  iv: e.detail.iv,
+                 //  encryptedData: e.detail.encryptedData
+               },//校验所需的信息
+               success(res) {
+                 console.log(res);//获取到的openid
+                 console.log("搞定了登陆流程");
+                 thispage.setData({ hasUserInfo: true})//这是一个有返回值的场景，this指向返回值，因此通过之前定义的thispage来修改hasuserinfo的值。
+
+                 //此处还需要优化，解决用户进入页面前就已授权的状况。和用户使用不同设备登录的问题。
+               }
+             })
+           } else {
+             console.log("登陆失败")
+           }//获取登录code失败
+         }
+       })
+       wx.hideLoading()
+
+       }
+     }
+   })
+ 
+  //  var thispage = this;//保存一个指向page的链接，方便后续修改
+  /*
     wx.login({
       success(res){
         if(res.code){
@@ -167,5 +208,6 @@ changeimage: function () {
         }//获取登录code失败
       }      
     })
+    */
   },
 })
