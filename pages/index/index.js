@@ -36,8 +36,6 @@ getinformation : function(){//获取后台的电影信息
       X += 1;
       thispage.setData({ number: X })
       thispage.setData({ xuanxiang: 0 })
-      //this.setData({ changetxt: '点击切换下一张图片'})
-      //this.newtext()//由于存在数据延迟的问题，把这句代码移入request内部
       //将该变量重置为一串和答案等长的空格
       var txt = ''
       for (var i = 0; i < thispage.data.nameLength; i++) {
@@ -66,7 +64,6 @@ changeimage: function () {
     }
     var txt = upsetArr(txt.split("")).join("");//txt为打乱的字符串
     this.setData({ choosetxt: txt })
-   // console.log(txt)//检查字符串
     var mimi=new Array()//暂存切分下来的字符串
       mimi[0]= txt.substring(0,10)
       mimi[1]=txt.substring(10,20)
@@ -76,17 +73,29 @@ changeimage: function () {
   },
  // -----------------------------------------------------------------------------
   onLoad: function () {//加载完成后先扫一遍
+
+  var thispage=this;
+    wx.getSetting({
+      success(res) {
+        console.log(res.authSetting)
+        var txt = res.authSetting;
+        console.log(txt);
+        if (res.authSetting["scope.userInfo"]) {
+          console.log("找到了userinfo");
+        thispage.setData({ hasUserInfo: true })
+       }
+      }
+    }),
   this.changeimage()
   },
-  newbindedtap: function () {//将备选框点击状态置0-----------------------------------------------------------------------------
+  newbindedtap: function () {//将备选框点击状态置0---------------------------------------------------
     for (var m = 0; m < 30; m++) {
       this.data.binded[m] = 0
     }
   },
   andaole: function (e) {//处理点击备选框的事件-----------------------------------------------------------------------------
     if(this.data.binded[Number(e.currentTarget.dataset.bindedtap)]==0){//判断选项未被点击过
-    console.log("选项、name长度"+this.data.xuanxiang+this.data.nameLength);
-
+   // console.log("选项、name长度"+this.data.xuanxiang+this.data.nameLength);
       if ( this.data.xuanxiang <this.data.nameLength){//判断选项是否已满
         for(var i=0;i<this.data.nameLength;i++){//寻找空位
             var W=this.data.nameme[i]
@@ -121,7 +130,6 @@ changeimage: function () {
       var W = e.currentTarget.dataset.number//取出被点击的放个所在位
       var txt = this.data.nameme.substring(0, W) +' '  + this.data.nameme.substring(W + 1, this.data.nameLength)
       this.setData({ nameme: txt })
-    //  console.log(this.data.nameme)
       this.data.xuanxiang--;
     }
   },
@@ -138,9 +146,9 @@ changeimage: function () {
   },
 
   getUserInfoNow:function(e){//初次登录的校验信息
-
     var thispage = this;//保存一个指向page的链接，方便后续修改
    //wx.//此处需要增加一个弹出菜单，用以在用户处于未登录状态，而点击了登陆按钮后封堵用户的操作
+   /*
    wx.showModal({
      title: '是否登陆？',
      content: '',
@@ -149,6 +157,10 @@ changeimage: function () {
          wx.showLoading({
            title: '',
          })
+     */
+      //   wx.getUserInfo({         })
+
+
        wx.login({
          success(res) {
            if (res.code) {
@@ -159,14 +171,11 @@ changeimage: function () {
                  code: res.code,
                  rawData: e.detail.rawData,
                  signature: e.detail.signature,
-                 //  iv: e.detail.iv,
-                 //  encryptedData: e.detail.encryptedData
                },//校验所需的信息
                success(res) {
                  console.log(res);//获取到的openid
                  console.log("搞定了登陆流程");
-                 thispage.setData({ hasUserInfo: true})//这是一个有返回值的场景，this指向返回值，因此通过之前定义的thispage来修改hasuserinfo的值。
-
+             //    thispage.setData({ hasUserInfo: true})//这是一个有返回值的场景，this指向返回值，因此通过之前定义的thispage来修改hasuserinfo的值。
                  //此处还需要优化，解决用户进入页面前就已授权的状况。和用户使用不同设备登录的问题。
                }
              })
@@ -175,12 +184,26 @@ changeimage: function () {
            }//获取登录code失败
          }
        })
-       wx.hideLoading()
+  //     wx.hideLoading()
 
-       }
-     }
-   })
- 
+ //      }
+  //   }
+  // })
+
+/*
+    var thispage = this;//更新登陆态信息
+    wx.getSetting({
+      success(res) {
+        console.log(res.authSetting)
+        var txt = res.authSetting;
+        console.log(txt);
+        if (res.authSetting["scope.userInfo"]) {
+          console.log("找到了userinfo");
+          thispage.setData({ hasUserInfo: true })
+        }
+      }
+    })
+ */
   //  var thispage = this;//保存一个指向page的链接，方便后续修改
   /*
     wx.login({
