@@ -16,6 +16,7 @@ Page({
     hunxiao:'的一是了我不人在他有这个上们来到时大地为子中你说生国年着就那和要她出也得里后自以会家可下而过天去能对小多然于心学么之都好看起发当没成只如事把还用第样道想作种开美总从无情己面最女但现前些所同日手又行意动方期它头经长儿回位分爱老因很给名法间斯知世什两次使身者被高已亲其进此话常与活正感',//储存常用字的字库
     changetxt:'点击跳过当前题目',
     hasUserInfo:false,
+    haslogined:false,
     canIUseButton:wx.canIUse('button.open-type.getUserInfo'),
   },
 getinformation : function(){//获取后台的电影信息
@@ -73,7 +74,9 @@ changeimage: function () {
   },
  // -----------------------------------------------------------------------------
   onLoad: function () {//加载完成后先扫一遍
+this.tologin()
 
+/*
   var thispage=this;
     wx.getSetting({
       success(res) {
@@ -86,6 +89,7 @@ changeimage: function () {
        }
       }
     }),
+    */
   this.changeimage()
   },
   newbindedtap: function () {//将备选框点击状态置0---------------------------------------------------
@@ -133,6 +137,33 @@ changeimage: function () {
       this.data.xuanxiang--;
     }
   },
+  tologin:function(){//静默登陆
+  var thispage=this;
+    wx.login({
+      success(res) {
+        if (res.code) {
+          console.log(res)
+          wx.request({
+            url: 'https://www.612star.cn/login-wx.php',
+            data: {
+              code: res.code,
+            },//校验所需的信息
+            success(res) {
+              console.log(res);//获取到的openid
+              console.log("搞定了登陆流程");
+              thispage.setData({ haslogined: true })
+              //    thispage.setData({ hasUserInfo: true})//这是一个有返回值的场景，this指向返回值，因此通过之前定义的thispage来修改hasuserinfo的值。
+              //此处还需要优化，解决用户进入页面前就已授权的状况。和用户使用不同设备登录的问题。
+            }
+          })
+        } else {
+          console.log("登陆失败")
+        }//获取登录code失败
+      }
+    })
+
+  },
+
   toUserInfoPage:function(){//跳转到用户信息页
     wx.navigateTo({
       url: '../userinfopage/userinfopage',
@@ -161,29 +192,29 @@ changeimage: function () {
       //   wx.getUserInfo({         })
 
 
-       wx.login({
-         success(res) {
-           if (res.code) {
-             console.log(res)
-             wx.request({
-               url: 'https://www.612star.cn/login-wx.php',
-               data: {
-                 code: res.code,
-                 rawData: e.detail.rawData,
-                 signature: e.detail.signature,
-               },//校验所需的信息
-               success(res) {
-                 console.log(res);//获取到的openid
-                 console.log("搞定了登陆流程");
-             //    thispage.setData({ hasUserInfo: true})//这是一个有返回值的场景，this指向返回值，因此通过之前定义的thispage来修改hasuserinfo的值。
-                 //此处还需要优化，解决用户进入页面前就已授权的状况。和用户使用不同设备登录的问题。
-               }
-             })
-           } else {
-             console.log("登陆失败")
-           }//获取登录code失败
-         }
-       })
+    wx.login({
+      success(res) {
+        if (res.code) {
+          console.log(res)
+          wx.request({
+            url: 'https://www.612star.cn/login-wx.php',
+            data: {
+              code: res.code,
+              rawData: e.detail.rawData,
+              signature: e.detail.signature,
+            },//校验所需的信息
+            success(res) {
+              console.log(res);//获取到的openid
+              console.log("搞定了登陆流程");
+              //    thispage.setData({ hasUserInfo: true})//这是一个有返回值的场景，this指向返回值，因此通过之前定义的thispage来修改hasuserinfo的值。
+              //此处还需要优化，解决用户进入页面前就已授权的状况。和用户使用不同设备登录的问题。
+            }
+          })
+        } else {
+          console.log("登陆失败")
+        }//获取登录code失败
+      }
+    })
   //     wx.hideLoading()
 
  //      }
