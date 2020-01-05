@@ -30,7 +30,9 @@ getinformation : function(){//获取后台的电影信息
     },
     success: function (res) {
       console.log(res)//获取到了电影信息
-      thispage.setData({ img_src: "https://www.612star.cn/image/" + res.data.movie_imgg });//修改当前电影图片
+   //   thispage.setData({ img_src: "https://www.612star.cn/image/" + res.data.movie_imgg });//修改当前电影图片
+      thispage.setData({ img_src: res.data.movie_imgg });//修改当前电影图片
+      console.log(res.data.movie_imgg )
       thispage.setData({ movie_name:res.data.movie_namee });//修改当前电影名字
       thispage.setData({ choosetxt: res.data.movie_namee });//将电影名字置入备选项
       thispage.setData({ nameLength: res.data.movie_namee.length });//计算当前电影名字总长.
