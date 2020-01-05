@@ -15,9 +15,11 @@
       <view class='choose-line-st' wx:for="{{chooseid}}"  id='{{nazou}}{{index}}' data-bindedtap='{{nazou}}{{index}}'  data-textt="{{lalala[nazou][item]}}"  bindtap='andaole'>{{lalala[nazou][item]}}</view>
     </view>
   </view>
-  <button wx:if="{{canIUseButton && !haslogined}}"  open-type='getUserInfo' bindgetuserinfo='getUserInfoNow' type='primary'> 初次使用请先登录</button>
+  <!--button wx:if="{{canIUseButton && !haslogined}}"  open-type='getUserInfo' bindgetuserinfo='getUserInfoNow' type='primary'> 初次使用请先登录</button-->
   <!--初次使用的按钮需要修改，变成静默登录-->
-  <button wx:else bindtap='changeimage' type='primary'>{{changetxt}}</button>
+  <!--button wx:else bindtap='changeimage' type='primary'>{{changetxt}}</button-->
+  
+  <button  bindtap='changeimage' type='primary'>{{changetxt}}</button> <!--由于上一句与登录关联的跳题代码有问题，临时新增一个替代一下-->
   <button bindtap='newtext' type='primary'>重新生成选项</button>
   <button  open-type='getUserInfo'  bindtap='toUserInfoPage' type='primary'>用户信息</button>
 </view>
