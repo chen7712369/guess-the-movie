@@ -5,9 +5,19 @@ function denglu() {//用户已登录之后，二次提交数据进行交互
     key: 'token',
     success(res) {
       session = res.data
-    //  console.log(session)
+      
+      if(!session){
+        var logtowx = require('/logon.js')
+        logtowx.tologon()
+        console.log('进入路径')
+        return;
+      }
+
+      
       console.log(session+'位于request.js')
+
     }
+   
   })
   wx.login({
     success(res) {
