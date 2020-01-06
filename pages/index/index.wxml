@@ -7,7 +7,7 @@
   </view>
    <!--  获取名字对应的空白格  -->
   <view class='text-name'  style="display:flex;justify-content:center;width:100%">
-   <view wx:for-items="{{nameLength}}" bindtap='xiugai' data-number='{{item}}' style='width:20px;height:20px;color:black;background-color:white;margin:5px;'>{{nameme[index]}} </view>
+   <view wx:for-items="{{nameLength}}" bindtap='xiugai' data-number='{{item}}' style='width:30px;height:30px;color:black;background-color:white;margin:10px;text-align:center;  line-height: 30px;'>{{nameme[index]}} </view><!-- margin:从5px改到了10px width height从20改为了30 -->
   </view>
  <!--  生成选项  -->
   <view class='choose' id='abc' > 

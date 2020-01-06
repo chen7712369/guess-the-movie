@@ -13,7 +13,8 @@ Page({
     choosetxt:'', //记录30个备选项的文本
     nameme: '',//选择的答案
     xuanxiang:0,//已选答案数
-    number:1,//第几道题，因为启动时自动调用切入下一道题的函数，因此预设为-1
+   // number:0,//记录当前题目在数据库中的id，同时作为启动小程序时的初始号码，考虑到数据库未规范排序，为了召唤出热门电影，因此预设为5
+    number:5,
     nameLength:'',//记录电影名字长度
     hunxiao:'的一是了我不人在他有这个上们来到时大地为子中你说生国年着就那和要她出也得里后自以会家可下而过天去能对小多然于心学么之都好看起发当没成只如事把还用第样道想作种开美总从无情己面最女但现前些所同日手又行意动方期它头经长儿回位分爱老因很给名法间斯知世什两次使身者被高已亲其进此话常与活正感',//储存常用字的字库
     changetxt:'点击跳过当前题目',
@@ -36,10 +37,8 @@ getinformation : function(){//获取后台的电影信息
       thispage.setData({ movie_name:res.data.movie_namee });//修改当前电影名字
       thispage.setData({ choosetxt: res.data.movie_namee });//将电影名字置入备选项
       thispage.setData({ nameLength: res.data.movie_namee.length });//计算当前电影名字总长.
+      thispage.setData({number:res.data.movie_idd})//将当前电影编号记录下来
 //-------------------------------------从外部移入的代码，解决json传输延迟所致的bug
-      var X = thispage.data.number;
-      X += 1;
-      thispage.setData({ number: X })
       thispage.setData({ xuanxiang: 0 })
       //将该变量重置为一串和答案等长的空格
       var txt = ''
