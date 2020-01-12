@@ -13,8 +13,8 @@ Page({
     choosetxt:'', //记录30个备选项的文本
     nameme: '',//选择的答案
     xuanxiang:0,//已选答案数
-   // number:0,//记录当前题目在数据库中的id，同时作为启动小程序时的初始号码，考虑到数据库未规范排序，为了召唤出热门电影，因此预设为5
-    number:5,
+    number:0,//记录当前题目在数据库中的id，同时作为启动小程序时的初始号码，考虑到数据库未规范排序，为了召唤出热门电影，因此预设为5
+   // number:5,
     nameLength:'',//记录电影名字长度
     hunxiao:'的一是了我不人在他有这个上们来到时大地为子中你说生国年着就那和要她出也得里后自以会家可下而过天去能对小多然于心学么之都好看起发当没成只如事把还用第样道想作种开美总从无情己面最女但现前些所同日手又行意动方期它头经长儿回位分爱老因很给名法间斯知世什两次使身者被高已亲其进此话常与活正感',//储存常用字的字库
     changetxt:'点击跳过当前题目',
@@ -24,12 +24,16 @@ Page({
   },
 getinformation : function(){//获取后台的电影信息
   var thispage = this;
+  console.log('提交的题号' + this.data.number);
   wx.request({//从服务器获取电影信息
+   
     url: 'https://www.612star.cn/newmovie.php',
     data: {
+      
       movienumber: this.data.number//将当前的题号作为标记传给服务器
     },
     success: function (res) {
+      
       console.log(res)//获取到了电影信息
    //   thispage.setData({ img_src: "https://www.612star.cn/image/" + res.data.movie_imgg });//修改当前电影图片
       thispage.setData({ img_src: res.data.movie_imgg });//修改当前电影图片
