@@ -25,12 +25,16 @@ Page({
 getinformation : function(){//获取后台的电影信息
   var thispage = this;
   console.log('提交的题号' + this.data.number);
+    
+  
+
+
   wx.request({//从服务器获取电影信息
    
     url: 'https://www.612star.cn/newmovie.php',
     data: {
-      
-      movienumber: this.data.number//将当前的题号作为标记传给服务器
+      movienumber: this.data.number,//将当前的题号作为标记传给服务器
+      user_id_token: wx.getStorageSync('token'),//将用户加密token传给服务器
     },
     success: function (res) {
       
@@ -59,8 +63,10 @@ getinformation : function(){//获取后台的电影信息
 changeimage: function () { 
   this.getinformation()
   this.newbindedtap()
-  },
-  newtext: function () {//随机生成字符补充缺位
+},
+
+
+newtext: function () {//随机生成字符补充缺位
     var txt=this.data.choosetxt;//缓存备选项的字符串
     for (var i = this.data.choosetxt.length;i<30;i++){//补足缺位
       var X=Math.round(Math.random()*139)
@@ -78,32 +84,22 @@ changeimage: function () {
       mimi[2]=txt.substring(20,30)
     this.setData({lalala:mimi})
     this.setData({changetxt:"点击跳过当前题目"});
-  },
+},
  // -----------------------------------------------------------------------------
   onLoad: function () {//加载完成后先扫一遍
-this.tologin()
-
-/*
-  var thispage=this;
-    wx.getSetting({
-      success(res) {
-        console.log(res.authSetting)
-        var txt = res.authSetting;
-        console.log(txt);
-        if (res.authSetting["scope.userInfo"]) {
-          console.log("找到了userinfo");
-        thispage.setData({ hasUserInfo: true })
-       }
-      }
-    }),
-    */
+  this.tologin()
   this.changeimage()
   },
+
+
   newbindedtap: function () {//将备选框点击状态置0---------------------------------------------------
     for (var m = 0; m < 30; m++) {
       this.data.binded[m] = 0
     }
   },
+
+
+
   andaole: function (e) {//处理点击备选框的事件-----------------------------------------------------------------------------
     if(this.data.binded[Number(e.currentTarget.dataset.bindedtap)]==0){//判断选项未被点击过
    // console.log("选项、name长度"+this.data.xuanxiang+this.data.nameLength);
@@ -130,6 +126,8 @@ this.tologin()
       }
     }
   },
+
+
   xiugai: function (e) {//处理点击答案框的修改事件-----------------------------------------------------------------------------
     if (this.data.nameme[e.currentTarget.dataset.number]!=' '){
       for (var i = 0; i < 30; i++) {
@@ -144,6 +142,9 @@ this.tologin()
       this.data.xuanxiang--;
     }
   },
+
+
+
   tologin:function(){//静默登陆
       wx.checkSession({
         success(){
