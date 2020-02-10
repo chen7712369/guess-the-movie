@@ -33,7 +33,7 @@ getinformation : function(){//获取后台的电影信息
    
     url: 'https://www.612star.cn/newmovie.php',
     data: {
-      user_id_token: wx.getStorageSync('token'),//将用户加密token传给服务器
+      user_id_token: wx.getStorageSync('token')//将用户加密token传给服务器
     },
     success: function (res) {
       console.log(res)//获取到了电影信息
@@ -121,10 +121,13 @@ newtext: function () {//随机生成字符补充缺位
             wx.request({//从服务器获取电影信息
               url: 'https://www.612star.cn/GetScore.php',
               data: {
-                movie_id: this.data.movie_id
+                movie_id: this.data.movie_id,
+                user_id_token: wx.getStorageSync('token'),
+                score:true
               },
               success: function (res) {
-              console.log('获取到的值为'+ res.data)
+              console.log('获取到的值为'+ res.data),
+              this.changeimage()
               }
 
             })

@@ -1,4 +1,5 @@
-function tologon() {//初次的静默登录。用户获取session并缓存本地
+function tologon() {
+  //初次的静默登录。用户获取session并缓存本地
 
   wx.login({
     success(res) {
