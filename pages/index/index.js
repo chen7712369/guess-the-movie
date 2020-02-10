@@ -160,8 +160,10 @@ newtext: function () {//随机生成字符补充缺位
   tologin:function(){//静默登陆
       wx.checkSession({
         success(){
-          var logtowx=require('../../js/request.js')
-          logtowx.denglu()
+          var logtowx = require('../../js/logon.js')
+          logtowx.tologon()
+          //var logtowx=require('../../js/request.js')
+          //logtowx.denglu()
         },
         fail(){//判断session_未过期则无需登录
           var logtowx = require('../../js/logon.js')
