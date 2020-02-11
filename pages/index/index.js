@@ -25,9 +25,6 @@ Page({
 getinformation : function(){//获取后台的电影信息
   var thispage = this;
   //console.log('提交的题号' + this.data.number);
-    
-  
-
 
   wx.request({//从服务器获取电影信息
    
@@ -85,7 +82,7 @@ newtext: function () {//随机生成字符补充缺位
  // -----------------------------------------------------------------------------
   onLoad: function () {//加载完成后先扫一遍
   this.tologin()
-  this.changeimage()
+  //this.changeimage()
   },
 
 
@@ -158,16 +155,15 @@ newtext: function () {//随机生成字符补充缺位
 
 
   tologin:function(){//静默登陆
+    var thispage = this;
       wx.checkSession({
-        success(){
-          var logtowx = require('../../js/logon.js')
-          logtowx.tologon()
-          //var logtowx=require('../../js/request.js')
-          //logtowx.denglu()
+        success() {//判断session未过期，上传token校验
+          var logtowx=require('../../js/request.js')
+          logtowx.denglu().then(function (value) { thispage.changeimage() }) //为防止登录信息回传过慢，变成同步处理。
         },
-        fail(){//判断session_未过期则无需登录
+        fail(){//判断session过期，重新登录
           var logtowx = require('../../js/logon.js')
-          logtowx.tologon()
+          logtowx.tologon().then(function (value){thispage.changeimage()})//为防止登录信息回传过慢，变成同步处理。
         }
       })
   },

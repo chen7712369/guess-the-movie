@@ -1,5 +1,6 @@
 function tologon() {
   //初次的静默登录。用户获取session并缓存本地
+ return new Promise(function (resolve, reject) {//由于异步代码会导致拉取电影信息时缺少用户信息，因此变为同步代码
 
   wx.login({
     success(res) {
@@ -14,6 +15,7 @@ function tologon() {
               key: "token",
               data: res.data.token,
             })
+            resolve()
             wx.getStorage({
               key: 'token',
               success(res) {
@@ -21,6 +23,8 @@ function tologon() {
                 console.log(res.data + '位于logon.js')
               }
             })
+
+
             //此处还需要优化，解决用户进入页面前就已授权的状况。和用户使用不同设备登录的问题。
           }
         })
@@ -29,6 +33,9 @@ function tologon() {
       }//获取登录code失败
     }
   })
+ })
+
+
 }
 module.exports = {
   tologon: tologon
