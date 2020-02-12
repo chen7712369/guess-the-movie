@@ -31,10 +31,10 @@ function denglu() {//用户已登录之后，二次提交数据进行交互
                   } else {
                     wx.setStorage({
                       key: "token",
-                      data: res.data,
+                      data: res.data.token,
                     })
                     resolve(res.data)
-                    console.log('这也能输出？？？？？' + res.data + '位于request.js')
+                    console.log('这也能输出？？？？？' + res.data.user_coin + '位于request.js')
                   }
                   //   console.log(res.data.token + '位于request.js')
                   //此处还需要优化，解决用户进入页面前就已授权的状况。和用户使用不同设备登录的问题。
