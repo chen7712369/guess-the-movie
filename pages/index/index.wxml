@@ -1,4 +1,4 @@
-<view style="background-color:blue;height:100%">
+<view style="background-color:#FFFFFF;height:100%">
   <!-- 获取图片  -->
   <view style="display:flex;width:100%;justify-content:center">
     <view class='text-image' style='width:80%' >
@@ -22,6 +22,7 @@
   <button  bindtap='changeimage' type='primary'>{{changetxt}}</button> <!--由于上一句与登录关联的跳题代码有问题，临时新增一个替代一下-->
   <button bindtap='newtext' type='primary'>重新生成选项</button>
   <button  open-type='getUserInfo'  bindtap='toUserInfoPage' type='primary'>用户信息</button>
+  <view type='primary'>当前积分：{{coin}} </view>
 </view>
 
 

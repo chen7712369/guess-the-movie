@@ -33,7 +33,7 @@ function denglu() {//用户已登录之后，二次提交数据进行交互
                       key: "token",
                       data: res.data,
                     })
-                    resolve()
+                    resolve(res.data)
                     console.log('这也能输出？？？？？' + res.data + '位于request.js')
                   }
                   //   console.log(res.data.token + '位于request.js')

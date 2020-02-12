@@ -1,6 +1,6 @@
 
 .choose-line-st{
-  background-color:green;
+  background-color:#F0F3FA;
   width:30px;
   height:30px;
   margin:5px

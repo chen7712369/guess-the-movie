@@ -16,6 +16,7 @@ Page({
     //number:0,//记录当前题目在数据库中的id，同时作为启动小程序时的初始号码，考虑到数据库未规范排序，为了召唤出热门电影，因此预设为5
     nameLength:'',//记录电影名字长度
     movie_id: '',//记录当前题目在数据库中的id
+    coin:15,//记录当前积分
     hunxiao:'的一是了我不人在他有这个上们来到时大地为子中你说生国年着就那和要她出也得里后自以会家可下而过天去能对小多然于心学么之都好看起发当没成只如事把还用第样道想作种开美总从无情己面最女但现前些所同日手又行意动方期它头经长儿回位分爱老因很给名法间斯知世什两次使身者被高已亲其进此话常与活正感',//储存常用字的字库
     changetxt:'点击跳过当前题目',
     hasUserInfo:false,
@@ -159,11 +160,18 @@ newtext: function () {//随机生成字符补充缺位
       wx.checkSession({
         success() {//判断session未过期，上传token校验
           var logtowx=require('../../js/request.js')
-          logtowx.denglu().then(function (value) { thispage.changeimage() }) //为防止登录信息回传过慢，变成同步处理。
+          logtowx.denglu().then(function (value) { thispage.changeimage() ; 
+            console.log("检查value" + value);thispage.setData({ coin: value.user_coin });}) //为防止登录信息回传过慢，变成同步处理。
+
         },
         fail(){//判断session过期，重新登录
           var logtowx = require('../../js/logon.js')
-          logtowx.tologon().then(function (value){thispage.changeimage()})//为防止登录信息回传过慢，变成同步处理。
+          logtowx.tologon().then(
+            function (value) {
+               thispage.changeimage() ;
+               console.log("检查value"+ value)
+               thispage.setData({ coin: value.user_coin });
+               })//为防止登录信息回传过慢，变成同步处理。
         }
       })
   },

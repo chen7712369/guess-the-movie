@@ -11,11 +11,15 @@ function tologon() {
             code: res.code,
           },//校验所需的信息
           success(res) {
+            console.log(res.data)
             wx.setStorage({
               key: "token",
               data: res.data.token,
+              //key:"coin",
+              //data: res.data.user_coin ,
             })
-            resolve()
+            //this.setData({ coin: res.data.user_coin });
+            resolve(res.data)
             wx.getStorage({
               key: 'token',
               success(res) {
