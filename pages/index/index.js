@@ -40,7 +40,8 @@ getinformation : function(){//获取后台的电影信息
       thispage.setData({ movie_name:res.data.movie_namee });//修改当前电影名字
       thispage.setData({ choosetxt: res.data.movie_namee });//将电影名字置入备选项
       thispage.setData({ nameLength: res.data.movie_namee.length });//计算当前电影名字总长.
-      thispage.setData({movie_id:res.data.movie_idd})//将当前电影编号记录下来
+      thispage.setData({movie_id:res.data.movie_idd});//将当前电影编号记录下来
+    //  thispage.setData({ coin: res.data.user_coin });//修改用户积分信息
 //-------------------------------------从外部移入的代码，解决json传输延迟所致的bug
       thispage.setData({ xuanxiang: 0 })
       //将该变量重置为一串和答案等长的空格
@@ -56,8 +57,33 @@ getinformation : function(){//获取后台的电影信息
 },
 //==============================================
 changeimage: function () { 
-  this.getinformation()
-  this.newbindedtap()
+  if (this.data.changetxt =='点击跳过当前题目'){
+  if(this.data.coin>=50){//积分够用于跳过题目
+    
+      {
+      wx.request({//从服务器获取电影信息
+        url: 'https://www.612star.cn/GetScore.php',//打不出，跳过题目
+        data: {
+          movie_id: this.data.movie_id,
+          user_id_token: wx.getStorageSync('token'),
+          score: false
+        },
+        success: function (res) {
+          console.log('获取到的值为' + res.data),
+            
+            this.changeimage()
+        }
+
+      })
+      }
+  }
+}
+    this.getinformation()
+    var logtowx = require('../../js/request.js')
+    logtowx.denglu().then(function (value) {  thispage.setData({ coin: value.user_coin }); console.log('更新积分')   })//增加一个补丁代码，保证修改积分后实时显示
+
+    this.newbindedtap()
+  
 },
 
 
